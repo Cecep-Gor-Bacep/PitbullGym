@@ -40,12 +40,12 @@
                               </DropShadow>
                            </effect>
                            <children>
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: #111;" text="Special">
+                              <Label fx:id="specialCardName" style="-fx-font-weight: bold; -fx-text-fill: #111;" text="Special">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
                               </Label>
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: #2f7d32;" text="650k/month">
+                              <Label fx:id="specialCardPrice" style="-fx-font-weight: bold; -fx-text-fill: #2f7d32;" text="650k/month">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -90,12 +90,12 @@
                            </effect>
                            <children>
                               <Label style="-fx-background-color: #f7b500; -fx-text-fill: white; -fx-padding: 6 14 6 14; -fx-background-radius: 12; -fx-font-size: 13;" text="POPULAR" />
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: #111;" text="Monthly">
+                              <Label fx:id="monthlyCardName" style="-fx-font-weight: bold; -fx-text-fill: #111;" text="Monthly">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
                               </Label>
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: #c27803;" text="150k/month">
+                              <Label fx:id="monthlyCardPrice" style="-fx-font-weight: bold; -fx-text-fill: #c27803;" text="150k/month">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -143,12 +143,12 @@
                               </DropShadow>
                            </effect>
                            <children>
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: #111;" text="Daily">
+                              <Label fx:id="dailyCardName" style="-fx-font-weight: bold; -fx-text-fill: #111;" text="Daily">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
                               </Label>
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: #275d38;" text="10k/day">
+                              <Label fx:id="dailyCardPrice" style="-fx-font-weight: bold; -fx-text-fill: #275d38;" text="10k/day">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
