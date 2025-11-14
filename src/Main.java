@@ -19,7 +19,7 @@ public class Main extends Application {
             region.prefHeightProperty().bind(pStage.heightProperty());
         }
         Scene scene = new Scene(root);
-        pStage.setTitle("Latihan JavaFX");
+        pStage.setTitle("Pitbull Gym");
         pStage.setScene(scene);
         // Fit to current device screen size
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();

@@ -23,16 +23,6 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnAbout" mnemonicParsing="false" onAction="#aboutAct" styleClass="btnCustom" stylesheets="@../Styles/button.css" text="About">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnPrice" mnemonicParsing="false" onAction="#priceAct" styleClass="btnCustom" stylesheets="@../Styles/button.css" text="Price">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
                   <Button fx:id="btnContact" mnemonicParsing="false" onAction="#contactAct" styleClass="btnCustom" stylesheets="@../Styles/button.css" text="Contact" textAlignment="JUSTIFY">
                      <HBox.margin>
                         <Insets right="20.0" />
