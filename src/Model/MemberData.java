@@ -1,13 +1,11 @@
 package Model;
 
-import Model.Member;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MemberData {
     // In-memory storage (tanpa database)
@@ -29,7 +27,7 @@ public class MemberData {
                 LocalDate.now().minusDays(10), LocalDate.now().plusDays(20)));
         memberStorage.add(new Member(currentId++, "Jane Smith", "081234567891", "Special",
                 LocalDate.now().minusDays(5), LocalDate.now().plusDays(25)));
-        memberStorage.add(new Member(currentId++, "Bob Johnson", "081234567892", "Daily",
+        memberStorage.add(new Member(currentId++, "Bob Johnson", "081234567892", "Monthly",
                 LocalDate.now().minusDays(2), LocalDate.now().minusDays(1)));
         memberStorage.add(new Member(currentId++, "Alice Williams", "081234567893", "Monthly",
                 LocalDate.now().minusDays(15), LocalDate.now().plusDays(15)));
@@ -46,8 +44,8 @@ public class MemberData {
             members.add(member);
         }
 
-        // Sort by ID descending (newest first)
-        members.sort((m1, m2) -> Integer.compare(m2.getId(), m1.getId()));
+        // Sort by ID ascending (oldest first)
+        members.sort((m1, m2) -> Integer.compare(m1.getId(), m2.getId()));
 
         return members;
     }
@@ -125,8 +123,8 @@ public class MemberData {
             }
         }
 
-        // Sort by ID descending
-        results.sort((m1, m2) -> Integer.compare(m2.getId(), m1.getId()));
+        // Sort by ID ascending
+        results.sort((m1, m2) -> Integer.compare(m1.getId(), m2.getId()));
 
         System.out.println("Search results for '" + keyword + "': " + results.size() + " found");
         return results;

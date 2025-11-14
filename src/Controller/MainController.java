@@ -87,6 +87,9 @@ public class MainController {
     private MemberData memberDAO;
     private ObservableList<Member> memberList;
 
+    // Timeline untuk auto-refresh status setiap menit
+    private Timeline statusRefreshTimeline;
+
     // ============================================
     // Initialize Method
     // ============================================
