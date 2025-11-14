@@ -1,63 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="461.0" prefWidth="656.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainController">
+<AnchorPane stylesheets="@../Styles/membership.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainController">
    <children>
-      <GridPane alignment="CENTER" hgap="20.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="336.7999633789062" minWidth="319.1999877929687" prefWidth="319.1999877929687" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="316.8000122070313" minWidth="299.2000366210938" prefWidth="316.8000122070313" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-         </rowConstraints>
+      <!-- Background Image -->
+      <ImageView fx:id="memberBackgroundImage" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Icons/bg_price.jpg" />
+         </image>
+      </ImageView>
+
+      <!-- Main Content -->
+      <VBox alignment="TOP_CENTER" spacing="16.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="347.0" prefWidth="242.0" spacing="8.0" style="-fx-background-color: grey; -fx-background-radius: 15; -fx-border-radius: 15;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <!-- Header Section -->
+            <Label style="-fx-text-fill: #FFFFFF;" text="MEMBER LIST">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+
+            <!-- Search and Action Bar -->
+            <HBox alignment="CENTER_LEFT" opacity="0.95" spacing="12.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 12; -fx-padding: 12;">
                <children>
-                  <Label contentDisplay="TOP" text="Monthly" textAlignment="CENTER">
+                  <TextField fx:id="searchField" promptText="Search member..." style="-fx-background-radius: 8; -fx-padding: 8; -fx-pref-width: 250;">
                      <font>
-                        <Font name="System Bold" size="36.0" />
+                        <Font size="13.0" />
                      </font>
-                  </Label>
-                  <Label text="150k" textAlignment="CENTER">
+                  </TextField>
+
+                  <Button fx:id="btnSearch" styleClass="btn-green" text="Search">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="System Bold" size="13.0" />
                      </font>
-                  </Label>
-                  <Line endX="100.0" startX="-100.0" />
+                  </Button>
+
+                  <Button fx:id="btnAddMember" styleClass="btn-yellow" text="+ Add Member">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+
+                  <Button fx:id="btnRefresh" styleClass="btn-grey" text="↻ Refresh">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                </children>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-            </VBox>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="347.0" spacing="8.0" style="-fx-background-color: Grey; -fx-background-radius: 15; -fx-border-radius: 15;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            </HBox>
+
+            <!-- Table Section -->
+            <VBox opacity="0.95" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 12; -fx-padding: 16;" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Daily" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label text="10k" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Line endX="100.0" startX="-100.0" />
+                  <TableView fx:id="memberTable" style="-fx-background-radius: 8;" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="colID" prefWidth="60.0" text="ID" />
+                        <TableColumn fx:id="colName" prefWidth="180.0" text="Member Name" />
+                        <TableColumn fx:id="colPhone" prefWidth="120.0" text="Phone" />
+                        <TableColumn fx:id="colPlan" prefWidth="100.0" text="Plan Type" />
+                        <TableColumn fx:id="colStartDate" prefWidth="110.0" text="Start Date" />
+                        <TableColumn fx:id="colEndDate" prefWidth="110.0" text="End Date" />
+                        <TableColumn fx:id="colStatus" prefWidth="90.0" text="Status" />
+                        <TableColumn fx:id="colAction" prefWidth="140.0" text="Action" />
+                     </columns>
+                  </TableView>
+
+                  <!-- Summary Footer -->
+                  <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 12 0 0 0;">
+                     <children>
+                        <Label style="-fx-text-fill: #666666;" text="Total Members:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalMembersLabel" style="-fx-text-fill: #2f7d32;" text="0">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+
+                        <Label style="-fx-text-fill: #666666;" text="Active:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="activeMembersLabel" style="-fx-text-fill: #2f7d32;" text="0">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+
+                        <Label style="-fx-text-fill: #666666;" text="Expired:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="expiredMembersLabel" style="-fx-text-fill: #d32f2f;" text="0">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
             </VBox>
          </children>
-      </GridPane>
+      </VBox>
    </children>
 </AnchorPane>

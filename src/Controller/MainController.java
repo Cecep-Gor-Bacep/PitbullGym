@@ -2,10 +2,12 @@ package Controller;
 
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
@@ -126,7 +128,6 @@ public class MainController {
         System.out.println("=================================");
 
         // TODO: Tambahkan logic Anda di sini
-        // Contoh: showPaymentDialog(planName, price);
     }
 
     // Highlight card yang dipilih
@@ -172,12 +173,10 @@ public class MainController {
         vbox.setStyle(currentStyle);
     }
 
-    // ✅ FIXED: Method setMainPane yang sudah diperbaiki
     private void setMainPane(String fxml) {
         try {
             Node node = FXMLLoader.load(getClass().getResource(fxml));
 
-            // ✅ PENTING: Jika node adalah Region, bind ke ukuran StackPane
             if (node instanceof Region) {
                 Region region = (Region) node;
 
@@ -201,6 +200,22 @@ public class MainController {
 
     public void memberAct(ActionEvent actionEvent) {
         setMainPane("/resources/fxml/Membership.fxml");
+
+        // Setup background image binding after loading
+        Platform.runLater(() -> {
+            Node memberNode = mainPane.getChildren().isEmpty() ? null : mainPane.getChildren().get(0);
+            if (memberNode != null) {
+                // Setup background image binding
+                ImageView backgroundImage = (ImageView) memberNode.lookup("#memberBackgroundImage");
+
+                if (backgroundImage != null) {
+                    // Bind ke ukuran mainPane (StackPane parent)
+                    backgroundImage.fitWidthProperty().bind(mainPane.widthProperty());
+                    backgroundImage.fitHeightProperty().bind(mainPane.heightProperty());
+                    backgroundImage.setPreserveRatio(false);
+                }
+            }
+        });
     }
 
     public void aboutAct(ActionEvent actionEvent) {

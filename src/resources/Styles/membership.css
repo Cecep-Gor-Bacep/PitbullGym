@@ -1,0 +1,67 @@
+/* Button Base Styles */
+.btn-green,
+.btn-yellow,
+.btn-grey {
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* Green Button (Search) */
+.btn-green {
+    -fx-background-color: #2f7d32;
+}
+
+.btn-green:hover {
+    -fx-background-color: #27692e;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btn-green:pressed {
+    -fx-background-color: #1e5021;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-translate-y: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0, 0, 1);
+}
+
+/* Yellow Button (Add Member) */
+.btn-yellow {
+    -fx-background-color: #f7b500;
+}
+
+.btn-yellow:hover {
+    -fx-background-color: #e0a500;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btn-yellow:pressed {
+    -fx-background-color: #c79200;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-translate-y: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0, 0, 1);
+}
+
+/* Grey Button (Refresh) */
+.btn-grey {
+    -fx-background-color: #666666;
+}
+
+.btn-grey:hover {
+    -fx-background-color: #555555;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btn-grey:pressed {
+    -fx-background-color: #444444;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-translate-y: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0, 0, 1);
+}
