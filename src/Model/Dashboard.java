@@ -4,7 +4,7 @@ import javafx.beans.property.*;
 
 import java.time.LocalDate;
 
-public class DashboardData {
+public class Dashboard {
     private final ObjectProperty<LocalDate> date;
     private final IntegerProperty visitorCount;
     private final IntegerProperty productsSold;
@@ -13,14 +13,14 @@ public class DashboardData {
     // Constants
     public static final int DAILY_GYM_FEE = 10000; // Rp 10.000 per visitor
 
-    public DashboardData() {
+    public Dashboard() {
         this.date = new SimpleObjectProperty<>(LocalDate.now());
         this.visitorCount = new SimpleIntegerProperty(0);
         this.productsSold = new SimpleIntegerProperty(0);
         this.dailyIncome = new SimpleLongProperty(0);
     }
 
-    public DashboardData(LocalDate date, int visitorCount, int productsSold, long dailyIncome) {
+    public Dashboard(LocalDate date, int visitorCount, int productsSold, long dailyIncome) {
         this.date = new SimpleObjectProperty<>(date);
         this.visitorCount = new SimpleIntegerProperty(visitorCount);
         this.productsSold = new SimpleIntegerProperty(productsSold);

@@ -37,6 +37,7 @@ public class MainController {
     // Controllers
     // ============================================
     private MemberController membershipController;
+    private DashboardController dashboardController;
 
     // Timeline untuk auto-refresh status membership
     private Timeline statusRefreshTimeline;
@@ -46,8 +47,9 @@ public class MainController {
     // ============================================
     @FXML
     public void initialize() {
-        // Initialize membership controller
+        // Initialize controllers
         membershipController = new MemberController();
+        dashboardController = new DashboardController();
 
         // Setup price cards hover effects
         if (specialCard != null) setupHoverEffect(specialCard);
@@ -244,6 +246,22 @@ public class MainController {
 
     public void priceAct(ActionEvent actionEvent) {
         setMainPane("/resources/fxml/Price.fxml");
+
+        // Setup background image binding after loading
+        Platform.runLater(() -> {
+            Node priceNode = mainPane.getChildren().isEmpty() ? null : mainPane.getChildren().get(0);
+            if (priceNode != null) {
+                // Setup background image binding
+                ImageView backgroundImage = (ImageView) priceNode.lookup("#priceBackgroundImage");
+
+                if (backgroundImage != null) {
+                    // Bind ke ukuran mainPane (StackPane parent)
+                    backgroundImage.fitWidthProperty().bind(mainPane.widthProperty());
+                    backgroundImage.fitHeightProperty().bind(mainPane.heightProperty());
+                    backgroundImage.setPreserveRatio(false);
+                }
+            }
+        });
     }
 
     public void contactAct(ActionEvent actionEvent) {
@@ -251,7 +269,23 @@ public class MainController {
     }
 
     public void mainAct(ActionEvent actionEvent) {
-        setMainPane("/resources/fxml/Main.fxml");
+        setMainPane("/resources/fxml/Dashboard.fxml");
+
+        // Setup background image and dashboard
+        Platform.runLater(() -> {
+            Node dashboardNode = mainPane.getChildren().isEmpty() ? null : mainPane.getChildren().get(0);
+            if (dashboardNode != null) {
+                // Setup background image
+                ImageView backgroundImage = (ImageView) dashboardNode.lookup("#dashboardBackgroundImage");
+                if (backgroundImage != null) {
+                    backgroundImage.fitWidthProperty().bind(mainPane.widthProperty());
+                    backgroundImage.fitHeightProperty().bind(mainPane.heightProperty());
+                    backgroundImage.setPreserveRatio(false);
+                }
+
+                // Setup dashboard
+                dashboardController.setupDashboard(dashboardNode);
+            }
+        });
     }
 }
-

@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.MemberData;
+import DataAccess.MemberDoA;
 import Model.Member;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -34,11 +34,11 @@ public class MemberController {
     private Button btnAddMember;
     private Button btnRefresh;
 
-    private MemberData memberDAO;
+    private MemberDoA memberDAO;
     private ObservableList<Member> memberList;
 
     public MemberController() {
-        this.memberDAO = new MemberData();
+        this.memberDAO = new MemberDoA();
     }
 
     // Setup table dari node yang di-lookup

@@ -1,6 +1,6 @@
-package Model;
+package DataAccess;
 
-import Model.DashboardData;
+import Model.Dashboard;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,15 +8,15 @@ import java.util.Map;
 public class DashboardDoA {
 
     // In-memory storage untuk dashboard data (key = date, value = data)
-    private Map<LocalDate, DashboardData> dashboardStorage;
-    private DashboardData todayData;
+    private Map<LocalDate, Dashboard> dashboardStorage;
+    private Dashboard todayData;
 
     public DashboardDoA() {
         dashboardStorage = new HashMap<>();
 
         // Initialize today's data
         LocalDate today = LocalDate.now();
-        todayData = new DashboardData(today, 0, 0, 0);
+        todayData = new Dashboard(today, 0, 0, 0);
         dashboardStorage.put(today, todayData);
 
         // Load dummy historical data for testing
@@ -26,22 +26,22 @@ public class DashboardDoA {
     private void loadDummyData() {
         // Data kemarin
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        DashboardData yesterdayData = new DashboardData(yesterday, 25, 8, 350000);
+        Dashboard yesterdayData = new Dashboard(yesterday, 25, 8, 350000);
         dashboardStorage.put(yesterday, yesterdayData);
 
         // Data 2 hari lalu
         LocalDate twoDaysAgo = LocalDate.now().minusDays(2);
-        DashboardData twoDaysAgoData = new DashboardData(twoDaysAgo, 30, 12, 480000);
+        Dashboard twoDaysAgoData = new Dashboard(twoDaysAgo, 30, 12, 480000);
         dashboardStorage.put(twoDaysAgo, twoDaysAgoData);
 
         // Data 3 hari lalu
         LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
-        DashboardData threeDaysAgoData = new DashboardData(threeDaysAgo, 28, 10, 420000);
+        Dashboard threeDaysAgoData = new Dashboard(threeDaysAgo, 28, 10, 420000);
         dashboardStorage.put(threeDaysAgo, threeDaysAgoData);
     }
 
     // Get today's data
-    public DashboardData getTodayData() {
+    public Dashboard getTodayData() {
         LocalDate today = LocalDate.now();
 
         // Check if date changed (new day)
@@ -50,7 +50,7 @@ public class DashboardDoA {
             dashboardStorage.put(todayData.getDate(), todayData);
 
             // Create new today's data
-            todayData = new DashboardData(today, 0, 0, 0);
+            todayData = new Dashboard(today, 0, 0, 0);
             dashboardStorage.put(today, todayData);
         }
 
@@ -58,8 +58,8 @@ public class DashboardDoA {
     }
 
     // Get data by date
-    public DashboardData getDataByDate(LocalDate date) {
-        return dashboardStorage.getOrDefault(date, new DashboardData(date, 0, 0, 0));
+    public Dashboard getDataByDate(LocalDate date) {
+        return dashboardStorage.getOrDefault(date, new Dashboard(date, 0, 0, 0));
     }
 
     // Add visitor to today
@@ -119,7 +119,7 @@ public class DashboardDoA {
 
         for (int i = 0; i < 7; i++) {
             LocalDate date = today.minusDays(i);
-            DashboardData data = dashboardStorage.get(date);
+            Dashboard data = dashboardStorage.get(date);
             if (data != null) {
                 total += data.getVisitorCount();
             }
@@ -135,7 +135,7 @@ public class DashboardDoA {
 
         for (int i = 0; i < 7; i++) {
             LocalDate date = today.minusDays(i);
-            DashboardData data = dashboardStorage.get(date);
+            Dashboard data = dashboardStorage.get(date);
             if (data != null) {
                 total += data.getDailyIncome();
             }
@@ -151,7 +151,7 @@ public class DashboardDoA {
 
         for (int i = 0; i < 7; i++) {
             LocalDate date = today.minusDays(i);
-            DashboardData data = dashboardStorage.get(date);
+            Dashboard data = dashboardStorage.get(date);
             if (data != null) {
                 total += data.getProductsSold();
             }
@@ -170,7 +170,7 @@ public class DashboardDoA {
             LocalDate date = today.minusDays(i);
             if (date.getMonth() != today.getMonth()) break;
 
-            DashboardData data = dashboardStorage.get(date);
+            Dashboard data = dashboardStorage.get(date);
             if (data != null) {
                 total += data.getVisitorCount();
             }
@@ -189,7 +189,7 @@ public class DashboardDoA {
             LocalDate date = today.minusDays(i);
             if (date.getMonth() != today.getMonth()) break;
 
-            DashboardData data = dashboardStorage.get(date);
+            Dashboard data = dashboardStorage.get(date);
             if (data != null) {
                 total += data.getDailyIncome();
             }

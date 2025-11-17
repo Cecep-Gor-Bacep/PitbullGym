@@ -1,5 +1,6 @@
-package Model;
+package DataAccess;
 
+import Model.Member;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -7,13 +8,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberData {
+public class MemberDoA {
     // In-memory storage (tanpa database)
     private List<Member> memberStorage;
     private int currentId;
 
     // Constructor
-    public MemberData() {
+    public MemberDoA() {
         memberStorage = new ArrayList<>();
         currentId = 1;
 
