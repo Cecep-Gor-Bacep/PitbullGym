@@ -1,48 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainController">
+<AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainController">
+    <children>
+        <!-- Background Image -->
+        <ImageView fx:id="dashboardBackgroundImage" pickOnBounds="true" preserveRatio="false"
+                   AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <image>
+                <Image url="@../Icons/bg_price.jpg" />
+            </image>
+        </ImageView>
 
-        <children>
-      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Pane maxHeight="471.0" maxWidth="733.0" prefHeight="471.0" prefWidth="733.0">
-               <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="4.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Icons/img_2.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Icons/img_3.png" />
-                            </image>
-                        </ImageView>
-                        <Label layoutX="200.0" text="BUILD YOUR BEST">
+        <!-- Main Content -->
+        <VBox alignment="TOP_CENTER" spacing="30.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
+            <children>
+                <!-- Header -->
+                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 15; -fx-padding: 20;">
+                    <children>
+                        <Label text="📊" style="-fx-font-size: 32;">
                             <font>
-                                <Font name="System Bold" size="36.0" />
+                                <Font size="32.0" />
                             </font>
                         </Label>
-                        <Label layoutX="304.0" layoutY="53.0" text="BODY">
+                        <VBox>
+                            <children>
+                                <Label text="DASHBOARD" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="28.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="currentDateLabel" text="Monday, November 17, 2025" style="-fx-text-fill: #666666;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <Button fx:id="btnRefreshDashboard" text="🔄 Refresh" style="-fx-background-color: #2f7d32; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 12 25 12 25; -fx-cursor: hand; -fx-font-weight: bold;">
+                            <HBox.margin>
+                                <Insets left="auto" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <!-- Statistics Cards -->
+                <HBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <!-- Visitors Card -->
+                        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: linear-gradient(to bottom, #4CAF50, #45a049); -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="👥" style="-fx-font-size: 48; -fx-text-fill: white;">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="VISITORS TODAY" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="visitorCountLabel" text="0" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="42.0" />
+                                    </font>
+                                </Label>
+                                <Label text="People" style="-fx-text-fill: rgba(255,255,255,0.8);">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <!-- Products Sold Card -->
+                        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: linear-gradient(to bottom, #2196F3, #1976D2); -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="🛍️" style="-fx-font-size: 48; -fx-text-fill: white;">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="PRODUCTS SOLD" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="productsSoldLabel" text="0" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="42.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Items" style="-fx-text-fill: rgba(255,255,255,0.8);">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <!-- Daily Income Card -->
+                        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: linear-gradient(to bottom, #FF9800, #F57C00); -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="💰" style="-fx-font-size: 48; -fx-text-fill: white;">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="DAILY INCOME" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="dailyIncomeLabel" text="Rp 0" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Rupiah" style="-fx-text-fill: rgba(255,255,255,0.8);">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Action Buttons -->
+                <HBox alignment="CENTER" spacing="20.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 15; -fx-padding: 25;">
+                    <children>
+                        <Button fx:id="btnAddVisitor" text="➕ Add Visitor" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 15 35 15 35; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 15;">
                             <font>
-                                <Font name="System Bold" size="36.0" />
+                                <Font name="System Bold" size="15.0" />
                             </font>
-                        </Label>
-                        <ImageView fitHeight="305.0" fitWidth="453.0" layoutX="280.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Icons/img.png" />
-                            </image>
-                        </ImageView>
-               </children>
-            </Pane>
-         </children>
-      </StackPane>
-        </children>
+                        </Button>
+
+                        <Button fx:id="btnAddProduct" text="🛒 Add Product Sale" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 15 35 15 35; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 15;">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="btnAddIncome" text="💵 Add Custom Income" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 15 35 15 35; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 15;">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <!-- Summary Info -->
+                <HBox alignment="CENTER" spacing="40.0" style="-fx-background-color: rgba(47, 125, 50, 0.1); -fx-background-radius: 12; -fx-padding: 20;">
+                    <children>
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <children>
+                                <Label text="Weekly Visitors" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="weeklyVisitorsLabel" text="0" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <children>
+                                <Label text="Weekly Income" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="weeklyIncomeLabel" text="Rp 0" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <children>
+                                <Label text="Monthly Visitors" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="monthlyVisitorsLabel" text="0" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="5.0">
+                            <children>
+                                <Label text="Monthly Income" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="monthlyIncomeLabel" text="Rp 0" style="-fx-text-fill: #2f7d32; -fx-font-weight: bold;">
+                                    <font>
+                                        <Font name="System Bold" size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>
