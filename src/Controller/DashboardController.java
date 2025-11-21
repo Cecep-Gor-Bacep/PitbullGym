@@ -9,7 +9,17 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import org.w3c.dom.Node;
+
+// JavaFX imports
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
+import javafx.util.Callback;
+
 
 
 public class DashboardController {
