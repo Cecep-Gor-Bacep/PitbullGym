@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import org.w3c.dom.Node;
 
+
 public class DashboardController {
 
     // Labels for Daily Visitor System
