@@ -29,3 +29,8 @@ bin/
 .DS_Store
 
 openjfx-sdk-*/
+lib/javafx-sdk-*/
+openjfx-*.zip
+# Local JavaFX SDK (download separately; do not commit)
+.idea/
+*.iml
