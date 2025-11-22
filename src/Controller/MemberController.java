@@ -2,27 +2,11 @@ package Controller;
 
 import DataAccess.MemberDoA;
 import Model.Member;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.scene.image.WritableImage;
-import javafx.embed.swing.SwingFXUtils;
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.imageio.ImageIO;
 
 public class MemberController {
 
@@ -47,9 +31,14 @@ public class MemberController {
 
     private MemberDoA memberDAO;
     private ObservableList<Member> memberList;
-
+    // Default constructor (creates its own DAO) kept for backward compatibility
     public MemberController() {
-        this.memberDAO = new MemberDoA();
+        this(new MemberDoA());
+    }
+
+    // Constructor injection to allow sharing DAO instances across controllers
+    public MemberController(MemberDoA memberDAO) {
+        this.memberDAO = memberDAO;
     }
 
     // Setup table dari node yang di-lookup
@@ -120,10 +109,10 @@ public class MemberController {
                     public TableCell<Member, Void> call(final TableColumn<Member, Void> param) {
                         final TableCell<Member, Void> cell = new TableCell<Member, Void>() {
 
-                            private final Button btnEdit = new Button("Edit");
-                            private final Button btnDelete = new Button("Delete");
-                            private final Button btnCard = new Button("Card");
-                            private final Button btnDetails = new Button("Details");
+                            private final Button btnEdit = new Button("📝");
+                            private final Button btnDelete = new Button("🗑️");
+                            private final Button btnCard = new Button("💳");
+                            private final Button btnDetails = new Button("ℹ📓");
 
                             {
                                 btnEdit.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; " +

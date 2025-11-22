@@ -18,9 +18,15 @@ public class AnalyticsController {
     private DashboardDoA dashboardDAO;
     private MemberDoA memberDAO;
 
+    // Default constructor (creates its own DAOs) kept for backward compatibility
     public AnalyticsController() {
-        this.dashboardDAO = new DashboardDoA();
-        this.memberDAO = new MemberDoA();
+        this(new DashboardDoA(), new MemberDoA());
+    }
+
+    // Constructor injection to allow sharing DAO instances across controllers
+    public AnalyticsController(DashboardDoA dashboardDAO, MemberDoA memberDAO) {
+        this.dashboardDAO = dashboardDAO;
+        this.memberDAO = memberDAO;
     }
 
     // Setup analytics from node lookup

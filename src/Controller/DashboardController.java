@@ -1,8 +1,5 @@
 package Controller;
 
-import DataAccess.DashboardDoA;
-import Model.Beverage;
-import Model.Dashboard;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -10,15 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import DataAccess.DashboardDoA;
+import Model.Beverage;
+import Model.Dashboard;
 // JavaFX imports
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
 
 
 
@@ -49,8 +47,14 @@ public class DashboardController {
     private Dashboard todayData;
     private Runnable onDataChangedCallback; // Callback to notify when data changes
 
+    // Default constructor (creates its own DAO) kept for backward compatibility
     public DashboardController() {
-        this.dashboardDAO = new DashboardDoA();
+        this(new DashboardDoA());
+    }
+
+    // Constructor injection to allow sharing DAO instances across controllers
+    public DashboardController(DashboardDoA dashboardDAO) {
+        this.dashboardDAO = dashboardDAO;
         this.todayData = dashboardDAO.getTodayData();
         initializeBeverages();
     }

@@ -56,7 +56,7 @@
                         <!-- Daily Visitor System Module -->
                         <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS" minWidth="300.0" maxWidth="600.0">
                             <children>
-                                <Label style="-fx-text-fill: #4CAF50; -fx-font-weight: bold; -fx-font-size: 22;" text="Daily Visitor System">
+                                <Label style="-fx-text-fill: #4CAF50; -fx-font-weight: bold; -fx-font-size: 22;" text="Daily Visitor">
                                     <font>
                                         <Font name="System Bold" size="22.0" />
                                     </font>
@@ -112,7 +112,7 @@
                         <!-- Beverage Sales System Module -->
                         <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS" minWidth="300.0" maxWidth="600.0">
                             <children>
-                                <Label style="-fx-text-fill: #FF9800; -fx-font-weight: bold; -fx-font-size: 22;" text="Beverage Sales System">
+                                <Label style="-fx-text-fill: #FF9800; -fx-font-weight: bold; -fx-font-size: 22;" text="Beverage Sales">
                                     <font>
                                         <Font name="System Bold" size="22.0" />
                                     </font>

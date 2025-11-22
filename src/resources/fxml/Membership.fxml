@@ -73,7 +73,7 @@
                         <TableColumn fx:id="colStartDate" minWidth="90.0" prefWidth="110.0" text="Start Date" />
                         <TableColumn fx:id="colEndDate" minWidth="90.0" prefWidth="110.0" text="End Date" />
                         <TableColumn fx:id="colStatus" minWidth="70.0" prefWidth="90.0" text="Status" />
-                        <TableColumn fx:id="colAction" minWidth="120.0" prefWidth="140.0" text="Action" />
+                        <TableColumn fx:id="colAction" minWidth="120.0" prefWidth="200.0" text="Action" />
                      </columns>
                   </TableView>
 

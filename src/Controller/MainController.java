@@ -1,19 +1,5 @@
 package Controller;
 
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.util.Duration;
-
 public class MainController {
     // ============================================
     // FXML Fields - Main Menu
@@ -48,6 +34,10 @@ public class MainController {
     private DashboardController dashboardController;
     private AnalyticsController analyticsController;
 
+    // Shared DAOs so all controllers operate on same in-memory data
+    private DataAccess.DashboardDoA sharedDashboardDAO = new DataAccess.DashboardDoA();
+    private DataAccess.MemberDoA sharedMemberDAO = new DataAccess.MemberDoA();
+
     // Timeline untuk auto-refresh status membership
     private Timeline statusRefreshTimeline;
 
@@ -56,9 +46,16 @@ public class MainController {
     // ============================================
     @FXML
     public void initialize() {
-        // Initialize controllers
-        membershipController = new MemberController();
-        dashboardController = new DashboardController();
+        // Initialize controllers with shared DAOs
+        membershipController = new MemberController(sharedMemberDAO);
+        dashboardController = new DashboardController(sharedDashboardDAO);
+
+        // Ensure dashboard data changes notify analytics (if analytics is open)
+        dashboardController.setOnDataChangedCallback(() -> {
+            if (analyticsController != null) {
+                Platform.runLater(() -> analyticsController.refreshAnalytics());
+            }
+        });
 
         // Setup price cards hover effects
         if (specialCard != null) setupHoverEffect(specialCard);
@@ -281,17 +278,9 @@ public class MainController {
         Platform.runLater(() -> {
             Node analyticsNode = mainPane.getChildren().isEmpty() ? null : mainPane.getChildren().get(0);
             if (analyticsNode != null) {
-                // Setup background image
-                ImageView backgroundImage = (ImageView) analyticsNode.lookup("#analyticsBackgroundImage");
-                if (backgroundImage != null) {
-                    backgroundImage.fitWidthProperty().bind(mainPane.widthProperty());
-                    backgroundImage.fitHeightProperty().bind(mainPane.heightProperty());
-                    backgroundImage.setPreserveRatio(false);
-                }
-                
                 // Setup analytics controller if needed
                 if (analyticsController == null) {
-                    analyticsController = new AnalyticsController();
+                    analyticsController = new AnalyticsController(sharedDashboardDAO, sharedMemberDAO);
                 }
                 analyticsController.setupAnalytics(analyticsNode);
                 // Always refresh when navigating to analytics page
