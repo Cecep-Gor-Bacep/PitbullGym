@@ -6,11 +6,15 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import DataAccess.DatabaseManager;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage pStage) throws Exception {
+        // Initialize database on application start
+        DatabaseManager.initialize();
+        
         Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/MainMenu.fxml"));
         if (root instanceof Region) {
             Region region = (Region) root;

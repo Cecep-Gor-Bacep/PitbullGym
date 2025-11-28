@@ -4,110 +4,134 @@ import Model.Member;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * MemberDoA - Data Access Object untuk Member
+ * Menggunakan SQLite database untuk persistent storage
+ */
 public class MemberDoA {
-    // In-memory storage (tanpa database)
-    private List<Member> memberStorage;
-    private int currentId;
+    private static final String TABLE_NAME = "members";
 
     // Constructor
     public MemberDoA() {
-        memberStorage = new ArrayList<>();
-        currentId = 1;
-
-        // Load dummy data untuk testing
-//        loadDummyData();
+        // Pastikan database sudah diinisialisasi
+        if (!DatabaseManager.isConnected()) {
+            DatabaseManager.initialize();
+        }
     }
 
-    // Load dummy data
-    private void loadDummyData() {
-        memberStorage.add(new Member(currentId++, "John Doe", "081234567890", "Monthly",
-                LocalDate.now().minusDays(10), LocalDate.now().plusDays(20)));
-        memberStorage.add(new Member(currentId++, "Jane Smith", "081234567891", "Special",
-                LocalDate.now().minusDays(5), LocalDate.now().plusDays(25)));
-        memberStorage.add(new Member(currentId++, "Bob Johnson", "081234567892", "Monthly",
-                LocalDate.now().minusDays(2), LocalDate.now().minusDays(1)));
-        memberStorage.add(new Member(currentId++, "Alice Williams", "081234567893", "Monthly",
-                LocalDate.now().minusDays(15), LocalDate.now().plusDays(15)));
-        memberStorage.add(new Member(currentId++, "Charlie Brown", "081234567894", "Special",
-                LocalDate.now().minusDays(3), LocalDate.now().plusDays(27)));
-    }
-
-    // Get all members
+    /**
+     * Get all members dari database
+     */
     public ObservableList<Member> getAllMembers() {
         ObservableList<Member> members = FXCollections.observableArrayList();
 
-        // Copy semua member dari storage
-        for (Member member : memberStorage) {
-            members.add(member);
-        }
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY id ASC";
 
-        // Sort by ID ascending (oldest first)
-        members.sort((m1, m2) -> Integer.compare(m1.getId(), m2.getId()));
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Member member = mapResultSetToMember(rs);
+                members.add(member);
+            }
+            System.out.println("✓ Retrieved " + members.size() + " members from database");
+        } catch (SQLException e) {
+            System.err.println("✗ Error retrieving members: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         return members;
     }
 
-    // Add new member
+    // Add new member ke database
     public boolean addMember(Member member) {
         try {
-            // Set ID otomatis
-            member.setId(currentId++);
-
-            // Add ke storage
-            memberStorage.add(member);
-
-            System.out.println("✓ Member added successfully: " + member.getName());
-            return true;
-        } catch (Exception e) {
-            System.err.println("✗ Failed to add member: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Update member
-    public boolean updateMember(Member updatedMember) {
-        try {
-            for (int i = 0; i < memberStorage.size(); i++) {
-                if (memberStorage.get(i).getId() == updatedMember.getId()) {
-                    memberStorage.set(i, updatedMember);
-                    System.out.println("✓ Member updated successfully: " + updatedMember.getName());
-                    return true;
-                }
+            // Check apakah phone sudah terdaftar
+            if (memberExistsByPhone(member.getPhone())) {
+                System.err.println("✗ Member with phone " + member.getPhone() + " already exists");
+                return false;
             }
-            System.err.println("✗ Member not found with ID: " + updatedMember.getId());
-            return false;
-        } catch (Exception e) {
-            System.err.println("✗ Failed to update member: " + e.getMessage());
+
+            String query = "INSERT INTO " + TABLE_NAME +
+                    " (name, phone, plan_type, start_date, end_date, status, membership_count) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            int rowsAffected = DatabaseManager.executeUpdate(query,
+                    member.getName(),
+                    member.getPhone(),
+                    member.getPlanType(),
+                    member.getStartDate().toString(),
+                    member.getEndDate().toString(),
+                    member.getStatus(),
+                    member.getMembershipCount()
+            );
+
+            if (rowsAffected > 0) {
+                System.out.println("✓ Member added successfully: " + member.getName());
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("✗ Error adding member: " + e.getMessage());
             e.printStackTrace();
-            return false;
         }
+
+        return false;
     }
 
-    // Delete member
+    // Update member di database
+    public boolean updateMember(Member member) {
+        try {
+            String query = "UPDATE " + TABLE_NAME +
+                    " SET name=?, phone=?, plan_type=?, start_date=?, end_date=?, status=?, membership_count=? " +
+                    "WHERE id=?";
+
+            int rowsAffected = DatabaseManager.executeUpdate(query,
+                    member.getName(),
+                    member.getPhone(),
+                    member.getPlanType(),
+                    member.getStartDate().toString(),
+                    member.getEndDate().toString(),
+                    member.getStatus(),
+                    member.getMembershipCount(),
+                    member.getId()
+            );
+
+            if (rowsAffected > 0) {
+                System.out.println("✓ Member updated successfully: " + member.getName());
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("✗ Error updating member: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    // Delete member dari database
     public boolean deleteMember(int id) {
         try {
-            for (int i = 0; i < memberStorage.size(); i++) {
-                if (memberStorage.get(i).getId() == id) {
-                    Member removed = memberStorage.remove(i);
-                    System.out.println("✓ Member deleted successfully: " + removed.getName());
-                    return true;
-                }
+            String query = "DELETE FROM " + TABLE_NAME + " WHERE id=?";
+
+            int rowsAffected = DatabaseManager.executeUpdate(query, id);
+
+            if (rowsAffected > 0) {
+                System.out.println("✓ Member deleted successfully (ID: " + id + ")");
+                return true;
             }
-            System.err.println("✗ Member not found with ID: " + id);
-            return false;
-        } catch (Exception e) {
-            System.err.println("✗ Failed to delete member: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("✗ Error deleting member: " + e.getMessage());
             e.printStackTrace();
-            return false;
         }
+
+        return false;
     }
 
-    // Search members by name or phone
+    // Search members by name atau phone (Live Search)
     public ObservableList<Member> searchMembers(String keyword) {
         ObservableList<Member> results = FXCollections.observableArrayList();
 
@@ -115,51 +139,91 @@ public class MemberDoA {
             return getAllMembers();
         }
 
-        String searchKey = keyword.toLowerCase().trim();
+        String searchPattern = "%" + keyword.toLowerCase() + "%";
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE LOWER(name) LIKE ? OR phone LIKE ? " +
+                "ORDER BY id ASC";
 
-        for (Member member : memberStorage) {
-            if (member.getName().toLowerCase().contains(searchKey) ||
-                    member.getPhone().contains(searchKey)) {
-                results.add(member);
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Member member = mapResultSetToMember(rs);
+                    results.add(member);
+                }
             }
+
+            System.out.println("Search results for '" + keyword + "': " + results.size() + " found");
+        } catch (SQLException e) {
+            System.err.println("✗ Error searching members: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        // Sort by ID ascending
-        results.sort((m1, m2) -> Integer.compare(m1.getId(), m2.getId()));
-
-        System.out.println("Search results for '" + keyword + "': " + results.size() + " found");
         return results;
     }
 
     // Get total members count
     public int getTotalMembers() {
-        return memberStorage.size();
+        return countMembersWithCondition(null);
+    }
+
+    // Helper method untuk count members
+    private int countMembersWithCondition(String status) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME;
+        if (status != null) {
+            query += " WHERE status = ?";
+        }
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            if (status != null) {
+                stmt.setString(1, status);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("✗ Error counting members: " + e.getMessage());
+        }
+
+        return 0;
     }
 
     // Get active members count
     public int getActiveMembers() {
-        LocalDate today = LocalDate.now();
-        return (int) memberStorage.stream()
-                .filter(m -> m.getEndDate().isAfter(today) || m.getEndDate().isEqual(today))
-                .count();
+        return countMembersWithCondition("Active");
     }
 
     // Get expired members count
     public int getExpiredMembers() {
-        LocalDate today = LocalDate.now();
-        return (int) memberStorage.stream()
-                .filter(m -> m.getEndDate().isBefore(today))
-                .count();
+        return countMembersWithCondition("Expired");
     }
 
     // Get members by plan type
     public ObservableList<Member> getMembersByPlan(String planType) {
         ObservableList<Member> results = FXCollections.observableArrayList();
 
-        for (Member member : memberStorage) {
-            if (member.getPlanType().equalsIgnoreCase(planType)) {
-                results.add(member);
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE plan_type = ? ORDER BY id ASC";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, planType);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Member member = mapResultSetToMember(rs);
+                    results.add(member);
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("✗ Error retrieving members by plan: " + e.getMessage());
         }
 
         return results;
@@ -169,10 +233,20 @@ public class MemberDoA {
     public ObservableList<Member> getMembersByStatus(String status) {
         ObservableList<Member> results = FXCollections.observableArrayList();
 
-        for (Member member : memberStorage) {
-            if (member.getStatus().equalsIgnoreCase(status)) {
-                results.add(member);
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE status = ? ORDER BY id ASC";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, status);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Member member = mapResultSetToMember(rs);
+                    results.add(member);
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("✗ Error retrieving members by status: " + e.getMessage());
         }
 
         return results;
@@ -180,39 +254,84 @@ public class MemberDoA {
 
     // Check if member exists by phone
     public boolean memberExistsByPhone(String phone) {
-        for (Member member : memberStorage) {
-            if (member.getPhone().equals(phone)) {
-                return true;
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE phone = ?";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, phone);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("✗ Error checking member existence: " + e.getMessage());
         }
+
         return false;
     }
 
     // Get member by ID
     public Member getMemberById(int id) {
-        for (Member member : memberStorage) {
-            if (member.getId() == id) {
-                return member;
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToMember(rs);
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("✗ Error retrieving member by ID: " + e.getMessage());
         }
+
         return null;
     }
 
-    // Clear all members (for testing)
+    // Clear all members (for testing/reset)
     public void clearAllMembers() {
-        memberStorage.clear();
-        currentId = 1;
-        System.out.println("✓ All members cleared");
+        // Prefer TRUNCATE to remove all rows and reset AUTO_INCREMENT.
+        String truncateQuery = "TRUNCATE TABLE " + TABLE_NAME;
+        try {
+            DatabaseManager.executeUpdate(truncateQuery);
+            System.out.println("✓ All members cleared from database (table truncated, AUTO_INCREMENT reset)");
+            return;
+        } catch (SQLException e) {
+            // TRUNCATE may fail if there are foreign key constraints or insufficient privileges.
+            System.err.println("⚠ TRUNCATE failed, falling back to DELETE + ALTER TABLE: " + e.getMessage());
+        }
+
+        // Fallback: DELETE all rows then reset AUTO_INCREMENT
+        String deleteQuery = "DELETE FROM " + TABLE_NAME;
+        try {
+            int rows = DatabaseManager.executeUpdate(deleteQuery);
+            // Reset AUTO_INCREMENT to 1
+            String resetAi = "ALTER TABLE " + TABLE_NAME + " AUTO_INCREMENT = 1";
+            try {
+                DatabaseManager.executeUpdate(resetAi);
+                System.out.println("✓ All members cleared from database (deleted: " + rows + ") and AUTO_INCREMENT reset");
+            } catch (SQLException ex) {
+                System.err.println("✗ Deleted rows, but failed to reset AUTO_INCREMENT: " + ex.getMessage());
+            }
+        } catch (SQLException e) {
+            System.err.println("✗ Error clearing members: " + e.getMessage());
+        }
     }
 
-    // Print all members to console (for debugging)
+    // Print all members to console (debugging)
     public void printAllMembers() {
+        ObservableList<Member> members = getAllMembers();
+
         System.out.println("\n========== MEMBER LIST ==========");
         System.out.printf("%-5s %-20s %-15s %-10s %-12s %-12s %-10s%n",
                 "ID", "Name", "Phone", "Plan", "Start", "End", "Status");
         System.out.println("=".repeat(85));
 
-        for (Member member : memberStorage) {
+        for (Member member : members) {
             System.out.printf("%-5d %-20s %-15s %-10s %-12s %-12s %-10s%n",
                     member.getId(),
                     member.getName(),
@@ -230,5 +349,18 @@ public class MemberDoA {
         System.out.println("================================\n");
     }
 
-    // Note: Method close() tidak diperlukan karena tidak ada koneksi database
+    /**
+     * Map ResultSet ke Member object
+     */
+    private Member mapResultSetToMember(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String phone = rs.getString("phone");
+        String planType = rs.getString("plan_type");
+        LocalDate startDate = LocalDate.parse(rs.getString("start_date"));
+        LocalDate endDate = LocalDate.parse(rs.getString("end_date"));
+        int membershipCount = rs.getInt("membership_count");
+
+        return new Member(id, name, phone, planType, startDate, endDate, membershipCount);
+    }
 }

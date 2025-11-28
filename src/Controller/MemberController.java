@@ -75,14 +75,17 @@ public class MemberController {
             this.colAction.setPrefWidth(260);
             this.colAction.setMinWidth(260);
 
+            // Display formatted UI row number (e.g., "PBG-0001") in the ID column
+            // while keeping the DB id property unchanged.
             this.colID.setCellFactory((col) -> new TableCell<Member, Integer>() {
+                @Override
                 protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
-                        this.setText((String)null);
+                        setText(null);
                     } else {
-                        Member member = (Member)this.getTableView().getItems().get(this.getIndex());
-                        this.setText(member.getMemberIdString());
+                        int displayIndex = getIndex() + 1; // 1-based row number in current view
+                        setText(String.format("PBG-%04d", displayIndex));
                     }
                 }
             });
@@ -178,6 +181,24 @@ public class MemberController {
 
         if (this.btnRefresh != null) {
             this.btnRefresh.setOnAction((e) -> this.loadMemberData());
+        }
+
+        // LIVE SEARCH: Add text property listener untuk real-time search
+        if (this.searchField != null) {
+            this.searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+                // Trigger search saat user mengetik
+                if (this.memberTable != null) {
+                    if (newVal.trim().isEmpty()) {
+                        // Jika search field kosong, tampilkan semua members
+                        this.loadMemberData();
+                    } else {
+                        // Perform live search dengan keyword yang diketik
+                        ObservableList<Member> searchResults = this.memberDAO.searchMembers(newVal.trim());
+                        this.memberTable.setItems(searchResults);
+                        this.updateStatistics();
+                    }
+                }
+            });
         }
     }
 

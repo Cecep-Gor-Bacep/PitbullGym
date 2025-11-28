@@ -16,7 +16,7 @@
    <BorderPane prefHeight="682.0" prefWidth="937.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <left>
          <!-- Left Sidebar Navigation -->
-         <VBox alignment="TOP_CENTER" minWidth="200.0" prefWidth="250.0" maxWidth="300.0" spacing="0.0" style="-fx-background-color: #f5f5f5; -fx-border-color: #e0e0e0; -fx-border-width: 0 2 0 0;">
+         <VBox alignment="TOP_CENTER" maxWidth="300.0" minWidth="200.0" prefWidth="250.0" spacing="0.0" style="-fx-background-color: #f5f5f5; -fx-border-color: #e0e0e0; -fx-border-width: 0 2 0 0;">
             <children>
                <!-- Logo/Title Section -->
                <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: white; -fx-padding: 25; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
@@ -37,19 +37,27 @@
                <!-- Navigation Buttons -->
                <VBox alignment="CENTER" spacing="5.0" style="-fx-padding: 20 10 20 10;" VBox.vgrow="ALWAYS">
                   <children>
-                     <Button fx:id="btnDashboard" alignment="CENTER_LEFT" contentDisplay="LEFT" mnemonicParsing="false" onAction="#dashboardAct" prefHeight="50.0" maxWidth="250.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14;" text="📊 Dashboard" HBox.hgrow="ALWAYS">
+                     <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                        <image>
+                           <Image url="@../Icons/PitbullGym.jpg" />
+                        </image>
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                     </ImageView>
+                     <Button fx:id="btnDashboard" alignment="CENTER_LEFT" contentDisplay="LEFT" maxWidth="250.0" mnemonicParsing="false" onAction="#dashboardAct" prefHeight="50.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14;" text="📊 Dashboard" VBox.vgrow="ALWAYS">
                         <padding>
                            <Insets left="20.0" />
                         </padding>
                      </Button>
                      
-                     <Button fx:id="btnAnalytics" alignment="CENTER_LEFT" contentDisplay="LEFT" mnemonicParsing="false" onAction="#analyticsAct" prefHeight="50.0" maxWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: #333333; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14; -fx-border-color: transparent;" text="📈 Analytics" HBox.hgrow="ALWAYS">
+                     <Button fx:id="btnAnalytics" alignment="CENTER_LEFT" contentDisplay="LEFT" maxWidth="250.0" mnemonicParsing="false" onAction="#analyticsAct" prefHeight="50.0" style="-fx-background-color: transparent; -fx-text-fill: #333333; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14; -fx-border-color: transparent;" text="📈 Analytics" VBox.vgrow="ALWAYS">
                         <padding>
                            <Insets left="20.0" />
                         </padding>
                      </Button>
                      
-                     <Button fx:id="btnMember" alignment="CENTER_LEFT" contentDisplay="LEFT" mnemonicParsing="false" onAction="#memberAct" prefHeight="50.0" maxWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: #333333; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14; -fx-border-color: transparent;" text="👥 Members" HBox.hgrow="ALWAYS">
+                     <Button fx:id="btnMember" alignment="CENTER_LEFT" contentDisplay="LEFT" maxWidth="250.0" mnemonicParsing="false" onAction="#memberAct" prefHeight="50.0" style="-fx-background-color: transparent; -fx-text-fill: #333333; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 14; -fx-border-color: transparent;" text="👥 Members" VBox.vgrow="ALWAYS">
                         <padding>
                            <Insets left="20.0" />
                         </padding>
